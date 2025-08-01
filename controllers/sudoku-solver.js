@@ -18,7 +18,7 @@ class SudokuSolver {
     // row: 0-indexed
     const start = row * 9;
     for (let i = 0; i < 9; i++) {
-      if (puzzleString[start + i] === value) {
+      if (puzzleString[start + i] === value && i !== column) {
         return false;
       }
     }
@@ -29,7 +29,7 @@ class SudokuSolver {
   checkColPlacement(puzzleString, row, column, value) {
     // column: 0-indexed
     for (let i = 0; i < 9; i++) {
-      if (puzzleString[column + i * 9] === value) {
+      if (puzzleString[column + i * 9] === value && i !== row) {
         return false;
       }
     }
@@ -38,6 +38,12 @@ class SudokuSolver {
 
 
   checkRegionPlacement(puzzleString, row, column, value) {
+    // Check if the value already exists at the specified row and column
+    const idx = row * 9 + column;
+    if (puzzleString[idx] === value) {
+      return true;
+    }
+
     // Find top-left of the 3x3 region
     const startRow = Math.floor(row / 3) * 3;
     const startCol = Math.floor(column / 3) * 3;
